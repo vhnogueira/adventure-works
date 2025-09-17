@@ -1,0 +1,21 @@
+sources:
+  - name: erp 
+    database: fea25_05
+    schema: raw_adventure_works
+    tables:
+      - name: sales_customer
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: "not ((personid is not null and storeid is not null) or (personid is null and storeid is null))"
+      
+      - name: person_person
+        tests:
+          - dbt_utils.unique_combination_of_columns:
+              combination_of_columns:
+                - businessentityid
+      
+      - name: sales_store
+        tests:
+          - dbt_utils.unique_combination_of_columns:
+              combination_of_columns:
+                - businessentityid

@@ -1,0 +1,40 @@
+models:
+  - name: dim_customers
+    description: "Customer dimension unifying individuals and stores"
+    columns:
+      - name: customer_pk
+        description: "Primary key for customer dimension"
+        tests:
+          - unique
+          - not_null
+      
+      - name: customer_name
+        description: "Customer name (person or store)"
+        tests:
+          - not_null
+      
+      - name: customer_type
+        description: "Customer type: Individual or Store"
+        tests:
+          - accepted_values:
+              values: ['Individual', 'Store']
+          - not_null
+      
+      - name: customer_account_number
+        description: "Customer account number (when applicable)"
+      
+      - name: customer_store_name
+        description: "Store name (only for Store customers)"
+      
+      - name: territory_fk
+        description: "Foreign key to sales territory"
+      
+      - name: customer_row_guid
+        description: "Unique GUID for the record"
+        tests:
+          - unique
+      
+      - name: customer_modified_date
+        description: "Last modified date of the record"
+        tests:
+          - not_null
