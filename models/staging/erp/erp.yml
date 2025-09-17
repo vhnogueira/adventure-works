@@ -5,8 +5,5 @@ sources:
     tables:
       - name: sales_customer
         tests:
-          - sql: |
-              select *
-              from {{ source('erp', 'sales_customer') }}
-              where (personid is not null and storeid is not null)
-                 or (personid is null and storeid is null)
+          - dbt_utils.expression_is_true:
+              expression: "not ((personid is not null and storeid is not null) or (personid is null and storeid is null))"
