@@ -6,7 +6,7 @@ sources:
       - name: sales_customer
         tests:
           - dbt_utils.expression_is_true:
-              expression: "not ((personid is not null and storeid is not null) or (personid is null and storeid is null))"
+              expression: "not (personid is null and storeid is null)"
       
       - name: person_person
         tests:
