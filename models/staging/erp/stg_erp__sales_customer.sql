@@ -13,8 +13,8 @@ with
             , cast(rowguid as string) as customer_row_guid
             , cast(modifieddate as timestamp) as customer_modified_date
             , case 
-                when person_fk is not null then 'Individual'
                 when store_fk is not null then 'Store'
+                when person_fk is not null then 'Individual'
                 else 'Unknown'
             end as customer_type
         from source_customer
