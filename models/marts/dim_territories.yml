@@ -1,0 +1,55 @@
+models:
+  - name: dim_territories
+    description: "Territory dimension with geographic information including addresses, states, countries and sales territories"
+    columns:
+      - name: territory_pk
+        description: "Primary key for territory dimension"
+        tests:
+          - unique
+          - not_null
+      
+      - name: territory_address_id
+        description: "Original address ID from source system"
+        tests:
+          - not_null
+      
+      - name: territory_city
+        description: "City name (includes 'Unknown' for missing values)"
+        tests:
+          - not_null
+      
+      - name: territory_state_province
+        description: "State or province name (includes 'Unknown' for missing values)"
+        tests:
+          - not_null
+      
+      - name: territory_postal_code
+        description: "Postal code (includes 'Unknown' for missing values)"
+        tests:
+          - not_null
+      
+      - name: territory_country_region
+        description: "Country or region name (includes 'Unknown' for missing values)"
+        tests:
+          - not_null
+      
+      - name: territory_sales_territory_id
+        description: "Sales territory ID from source system (can be null)"
+      
+      - name: territory_name
+        description: "Sales territory name (includes 'No Territory' for missing values)"
+        tests:
+          - not_null
+      
+      - name: territory_group
+        description: "Sales territory group (includes 'No Group' for missing values)"
+        tests:
+          - not_null
+      
+      - name: territory_row_guid
+        description: "Unique GUID for the address record"
+      
+      - name: territory_modified_date
+        description: "Last modified date of the address record"
+        tests:
+          - not_null
