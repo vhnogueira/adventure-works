@@ -19,69 +19,61 @@ models:
         tests:
           - not_null
           - dbt_utils.accepted_range:
-              arguments:
-                min_value: 2008
-                max_value: 2015
-                inclusive: true
+              min_value: 2008
+              max_value: 2015
+              inclusive: true
       
       - name: date_quarter
         description: "Quarter (1-4)"
         tests:
           - not_null
           - accepted_values:
-              arguments:
-                values: [1, 2, 3, 4]
+              values: [1, 2, 3, 4]
       
       - name: date_month
         description: "Month (1-12)"
         tests:
           - not_null
           - accepted_values:
-              arguments:
-                values: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+              values: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
       
       - name: date_month_name
         description: "Name of the month"
         tests:
           - not_null
           - accepted_values:
-              arguments:
-                values: ['January', 'February', 'March', 'April', 'May', 'June', 
-                        'July', 'August', 'September', 'October', 'November', 'December']
+              values: ['January', 'February', 'March', 'April', 'May', 'June', 
+                      'July', 'August', 'September', 'October', 'November', 'December']
       
       - name: date_day
         description: "Day of the month"
         tests:
           - not_null
           - dbt_utils.accepted_range:
-              arguments:
-                min_value: 1
-                max_value: 31
-                inclusive: true
+              min_value: 1
+              max_value: 31
+              inclusive: true
       
       - name: date_day_of_week
-        description: "Day of the week (1-7, 1=Sunday)"
+        description: "Day of the week (0=Monday, 1=Tuesday...6=Sunday)"
         tests:
           - not_null
           - accepted_values:
-              arguments:
-                values: [1, 2, 3, 4, 5, 6, 7]
+              values: [0, 1, 2, 3, 4, 5, 6]
       
       - name: date_day_name
         description: "Name of the day of the week"
         tests:
           - not_null
           - accepted_values:
-              arguments:
-                values: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+              values: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
       
       - name: date_is_weekend
         description: "Indicates if date is weekend"
         tests:
           - not_null
           - accepted_values:
-              arguments:
-                values: [true, false]
+              values: [true, false]
       
       - name: date_fiscal_year
         description: "Fiscal year (starts July 1st)"
@@ -93,5 +85,4 @@ models:
         tests:
           - not_null
           - accepted_values:
-              arguments:
-                values: [1, 2, 3, 4]
+              values: [1, 2, 3, 4]
