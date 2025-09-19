@@ -3,9 +3,57 @@ sources:
     database: fea25_05
     schema: raw_adventure_works
     tables:
+      
+      - name: production_product
+        description: "Product catalog with prices and specifications"
+        columns:
+          - name: productid
+            description: "Primary key for product records"
+            tests:
+              - unique
+              - not_null
+          - name: name
+            description: "Product name"
+            tests:
+              - not_null
+          - name: listprice
+            description: "Product list price"
+            tests:
+              - dbt_utils.accepted_range:
+                  min_value: 0
+                  inclusive: true
+
+      - name: production_productsubcategory
+        description: "Product subcategory definitions"
+        columns:
+          - name: productsubcategoryid
+            description: "Primary key for product subcategory records"
+            tests:
+              - unique
+              - not_null
+          - name: productcategoryid
+            description: "Foreign key to product category"
+            tests:
+              - not_null
+
+      - name: production_productcategory
+        description: "Product category definitions"
+        columns:
+          - name: productcategoryid
+            description: "Primary key for product category records"
+            tests:
+              - unique
+              - not_null
+          - name: name
+            description: "Product category name"
+            tests:
+              - not_null
+
       - name: sales_customer
+        description: "Customer records linking persons and stores to sales territories"
         columns:
           - name: customerid
+            description: "Primary key for customer records"
             tests:
               - unique
               - not_null
@@ -14,60 +62,148 @@ sources:
               expression: "not (personid is null and storeid is null)"
       
       - name: person_person
+        description: "Individual person records"
         columns:
           - name: businessentityid
+            description: "Primary key for person records"
             tests:
               - unique
               - not_null
+          - name: firstname
+            description: "Person's first name"
+          - name: lastname
+            description: "Person's last name"
       
       - name: sales_store
+        description: "Store/business customer records"
         columns:
           - name: businessentityid
-            tests:
-              - unique
-              - not_null
-      
-      - name: production_product
-        columns:
-          - name: productid
-            tests:
-              - unique
-              - not_null
-      
-      - name: production_productsubcategory
-        columns:
-          - name: productsubcategoryid
-            tests:
-              - unique
-              - not_null
-      
-      - name: production_productcategory
-        columns:
-          - name: productcategoryid
+            description: "Primary key for store records"
             tests:
               - unique
               - not_null
 
       - name: sales_salesorderheader
-        description: "Sales order header table - source for date dimension"
+        description: "Sales order header table with order dates and totals"
         columns:
           - name: salesorderid
+            description: "Primary key for sales order records"
             tests:
               - unique
               - not_null
           - name: orderdate
+            description: "Date when order was placed"
             tests:
               - not_null
-      
+          - name: customerid
+            description: "Foreign key to customer"
+            tests:
+              - not_null
+
       - name: sales_salesorderdetail
         description: "Sales order detail table - fact table source"
         columns:
           - name: salesorderdetailid
+            description: "Primary key for sales order detail records"
             tests:
               - unique
+              - not_null
+          - name: salesorderid
+            description: "Foreign key to sales order header"
+            tests:
+              - not_null
+          - name: productid
+            description: "Foreign key to product"
+            tests:
               - not_null
         tests:
           - dbt_utils.unique_combination_of_columns:
               combination_of_columns:
                 - salesorderid
                 - salesorderdetailid
+
+      - name: person_address
+        description: "Address records for delivery and billing"
+        columns:
+          - name: addressid
+            description: "Primary key for address records"
+            tests:
+              - unique
+              - not_null
+          - name: city
+            description: "City name"
+            tests:
+              - not_null
+          - name: stateprovinceid
+            description: "Foreign key to state/province"
+            tests:
+              - not_null
+
+      - name: person_stateprovince
+        description: "State and province definitions"
+        columns:
+          - name: stateprovinceid
+            description: "Primary key for state/province records"
+            tests:
+              - unique
+              - not_null
+          - name: countryregioncode
+            description: "Foreign key to country/region"
+            tests:
+              - not_null
+          - name: name
+            description: "State or province name"
+            tests:
+              - not_null
+
+      - name: person_countryregion
+        description: "Country and region definitions"
+        columns:
+          - name: countryregioncode
+            description: "Primary key for country/region records"
+            tests:
+              - unique
+              - not_null
+          - name: name
+            description: "Country or region name"
+            tests:
+              - not_null
+
+      - name: sales_salesterritory
+        description: "Sales territory definitions and performance metrics"
+        columns:
+          - name: territoryid
+            description: "Primary key for sales territory records"
+            tests:
+              - unique
+              - not_null
+          - name: name
+            description: "Sales territory name"
+            tests:
+              - not_null
+          - name: countryregioncode
+            description: "Foreign key to country/region"
+            tests:
+              - not_null
+
+      - name: person_businessentityaddress
+        description: "Junction table linking business entities to addresses"
+        columns:
+          - name: businessentityid
+            description: "Foreign key to business entity"
+            tests:
+              - not_null
+          - name: addressid
+            description: "Foreign key to address"
+            tests:
+              - not_null
+          - name: addresstypeid
+            description: "Foreign key to address type"
+            tests:
+              - not_null
+        tests:
+          - dbt_utils.unique_combination_of_columns:
+              combination_of_columns:
+                - businessentityid
+                - addressid
+                - addresstypeid
