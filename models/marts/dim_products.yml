@@ -24,8 +24,9 @@ models:
         tests:
           - not_null
           - dbt_utils.accepted_range:
-              min_value: 0
-              inclusive: true
+              arguments:
+                min_value: 0
+                inclusive: true
       
       - name: product_subcategory_name
         description: "Product subcategory name (includes 'No Subcategory' for products without subcategory)"
@@ -42,11 +43,13 @@ models:
         tests:
           - not_null
           - accepted_values:
-              values: [true, false]
+              arguments:
+                values: [true, false]
       
       - name: product_finished_goods_flag
-        description: "Indicates if product is a finished good"
+        description: "Indicates if product is a finished goods"
         tests:
           - not_null
           - accepted_values:
-              values: [true, false]
+              arguments:
+                values: [true, false]

@@ -1,0 +1,116 @@
+models:
+  - name: fct_sales
+    description: "Sales fact table - granularity at sales order detail level"
+    columns:
+      - name: order_item_sk
+        description: "Surrogate key for each order item"
+        tests:
+          - unique
+          - not_null
+      
+      - name: customer_fk
+        description: "Foreign key to dim_customers"
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_customers')
+                field: customer_pk
+      
+      - name: product_fk
+        description: "Foreign key to dim_products"
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_products')
+                field: product_pk
+      
+      - name: order_date_pk
+        description: "Foreign key to dim_dates"
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_dates')
+                field: date_full_date
+      
+      - name: territory_fk
+        description: "Foreign key to dim_territories"
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_territories')
+                field: territory_address_id
+      
+      - name: credit_card_type
+        description: "Type of credit card used or null for cash/other"
+      
+      - name: sales_reason_name
+        description: "Reason for sale (can be multiple, comma-separated)"
+      
+      - name: order_status
+        description: "Status of the order"
+        tests:
+          - not_null
+      
+      - name: order_number
+        description: "Sales order number"
+        tests:
+          - not_null
+      
+      - name: quantity
+        description: "Quantity ordered"
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 1
+                inclusive: true
+      
+      - name: unit_price
+        description: "Unit price of the product"
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0
+                inclusive: true
+      
+      - name: unit_price_discount
+        description: "Discount percentage applied"
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0
+                max_value: 1
+                inclusive: true
+      
+      - name: line_total
+        description: "Total amount for this line item"
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0
+                inclusive: false
+      
+      - name: freight_allocated
+        description: "Proportional freight allocated to this line item"
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0
+                inclusive: true
+      
+      - name: tax_amount_allocated
+        description: "Proportional tax allocated to this line item"
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0
+                inclusive: true

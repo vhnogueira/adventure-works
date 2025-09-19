@@ -17,7 +17,8 @@ models:
         description: "Customer type: Individual or Store"
         tests:
           - accepted_values:
-              values: ['Individual', 'Store']
+              arguments:
+                values: ['Individual', 'Store']
           - not_null
       
       - name: customer_account_number
