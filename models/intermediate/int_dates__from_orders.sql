@@ -33,6 +33,7 @@ with
             , extract(quarter from date_value) as date_quarter
             , extract(month from date_value) as date_month
             , extract(day from date_value) as date_day
+            -- Snowflake DAYOFWEEK: 0=Monday, 1=Tuesday...6=Sunday
             , extract(dayofweek from date_value) as date_day_of_week
             , extract(dayofyear from date_value) as date_day_of_year
             , extract(week from date_value) as date_week_of_year
@@ -50,17 +51,19 @@ with
                 when 11 then 'November'
                 when 12 then 'December'
             end as date_month_name
+            -- Snowflake: 0=Monday, 1=Tuesday, 2=Wednesday, 3=Thursday, 4=Friday, 5=Saturday, 6=Sunday
             , case extract(dayofweek from date_value)
-                when 1 then 'Sunday'
-                when 2 then 'Monday'
-                when 3 then 'Tuesday'
-                when 4 then 'Wednesday'
-                when 5 then 'Thursday'
-                when 6 then 'Friday'
-                when 7 then 'Saturday'
+                when 0 then 'Monday'
+                when 1 then 'Tuesday'
+                when 2 then 'Wednesday'
+                when 3 then 'Thursday'
+                when 4 then 'Friday'
+                when 5 then 'Saturday'
+                when 6 then 'Sunday'
             end as date_day_name
-            , case 
-                when extract(dayofweek from date_value) in (1, 7) then true
+            , case extract(dayofweek from date_value)
+                when 5 then true  -- Saturday
+                when 6 then true  -- Sunday
                 else false
             end as date_is_weekend
             -- Fiscal year starts July 1st for Adventure Works
