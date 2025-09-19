@@ -47,3 +47,27 @@ sources:
             tests:
               - unique
               - not_null
+
+      - name: sales_salesorderheader
+        description: "Sales order header table - source for date dimension"
+        columns:
+          - name: salesorderid
+            tests:
+              - unique
+              - not_null
+          - name: orderdate
+            tests:
+              - not_null
+      
+      - name: sales_salesorderdetail
+        description: "Sales order detail table - fact table source"
+        columns:
+          - name: salesorderdetailid
+            tests:
+              - unique
+              - not_null
+        tests:
+          - dbt_utils.unique_combination_of_columns:
+              combination_of_columns:
+                - salesorderid
+                - salesorderdetailid
