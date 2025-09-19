@@ -207,3 +207,59 @@ sources:
                 - businessentityid
                 - addressid
                 - addresstypeid
+
+      - name: sales_creditcard
+        description: "Credit card information for payments"
+        columns:
+          - name: creditcardid
+            description: "Primary key for credit card records"
+            tests:
+              - unique
+              - not_null
+          - name: cardtype
+            description: "Type of credit card (Visa, MasterCard, etc.)"
+            tests:
+              - not_null
+
+      - name: sales_salesreason
+        description: "Sales reason lookup table"
+        columns:
+          - name: salesreasonid
+            description: "Primary key for sales reason records"
+            tests:
+              - unique
+              - not_null
+          - name: name
+            description: "Sales reason name"
+            tests:
+              - not_null
+
+      - name: sales_salesorderheadersalesreason
+        description: "Junction table linking sales orders to sales reasons"
+        columns:
+          - name: salesorderid
+            description: "Foreign key to sales order header"
+            tests:
+              - not_null
+          - name: salesreasonid
+            description: "Foreign key to sales reason"
+            tests:
+              - not_null
+        tests:
+          - dbt_utils.unique_combination_of_columns:
+              combination_of_columns:
+                - salesorderid
+                - salesreasonid
+
+      - name: sales_specialoffer
+        description: "Special offers and promotions"
+        columns:
+          - name: specialofferid
+            description: "Primary key for special offer records"
+            tests:
+              - unique
+              - not_null
+          - name: description
+            description: "Special offer description"
+            tests:
+              - not_null

@@ -35,6 +35,18 @@ clean-targets:         # directories to be removed by `dbt clean`
 # continue to be built as views. These settings can be overridden in the individual model files
 # using the `{{ config(...) }}` macro.
 
+
 models:
   adventure_works:
-
+    +materialized: view
+    # Applies to all files under models/example/
+    intermediate:
+      +schema: int
+    
+    marts:
+      +materialized: table
+      +schema: marts
+    
+    staging:
+      erp:
+        +schema: stg_erp

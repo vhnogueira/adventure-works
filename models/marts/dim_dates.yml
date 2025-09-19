@@ -1,0 +1,97 @@
+models:
+  - name: dim_dates
+    description: "Date dimension for temporal analysis"
+    columns:
+      - name: date_pk
+        description: "Primary key - surrogate key for date dimension"
+        tests:
+          - unique
+          - not_null
+      
+      - name: date_full_date
+        description: "Full date value"
+        tests:
+          - not_null
+          - unique
+      
+      - name: date_year
+        description: "Year (2011, 2012, etc.)"
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 2008
+                max_value: 2015
+                inclusive: true
+      
+      - name: date_quarter
+        description: "Quarter (1-4)"
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: [1, 2, 3, 4]
+      
+      - name: date_month
+        description: "Month (1-12)"
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+      
+      - name: date_month_name
+        description: "Name of the month"
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['January', 'February', 'March', 'April', 'May', 'June', 
+                        'July', 'August', 'September', 'October', 'November', 'December']
+      
+      - name: date_day
+        description: "Day of the month"
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 1
+                max_value: 31
+                inclusive: true
+      
+      - name: date_day_of_week
+        description: "Day of the week (1-7, 1=Sunday)"
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: [1, 2, 3, 4, 5, 6, 7]
+      
+      - name: date_day_name
+        description: "Name of the day of the week"
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+      
+      - name: date_is_weekend
+        description: "Indicates if date is weekend"
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: [true, false]
+      
+      - name: date_fiscal_year
+        description: "Fiscal year (starts July 1st)"
+        tests:
+          - not_null
+      
+      - name: date_fiscal_quarter
+        description: "Fiscal quarter (1-4)"
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: [1, 2, 3, 4]
