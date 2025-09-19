@@ -107,6 +107,7 @@ with
             , unit_price
             , unit_price_discount
             , (quantity * unit_price * (1 - unit_price_discount)) as line_total
+            , (quantity * unit_price) as gross_total
 
             -- Calculate allocated amounts based on line total proportion
             , case 
