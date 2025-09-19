@@ -24,7 +24,6 @@ models:
         tests:
           - not_null
           - dbt_utils.accepted_range:
-              arguments:
                 min_value: 0
                 inclusive: true
       
@@ -43,7 +42,6 @@ models:
         tests:
           - not_null
           - accepted_values:
-              arguments:
                 values: [true, false]
       
       - name: product_finished_goods_flag
@@ -51,5 +49,4 @@ models:
         tests:
           - not_null
           - accepted_values:
-              arguments:
                 values: [true, false]
