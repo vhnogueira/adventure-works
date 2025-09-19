@@ -24,7 +24,7 @@ with
     , order_sales_reasons as (
         select 
             sales_order_fk
-            , listagg(sales_reason_name, ', ') as sales_reason_names
+            , listagg(sales_reason_name, ', ') within group (order by sales_reason_name) as sales_reason_names
         from {{ ref('stg_erp__sales_salesorderheadersalesreason') }} osr
         inner join {{ ref('stg_erp__sales_salesreason') }} sr
             on osr.sales_reason_fk = sr.sales_reason_pk
@@ -92,13 +92,13 @@ with
             -- Foreign keys to dimensions
             , customer_fk
             , product_fk
-            , cast(order_date as date) as order_date_pk  -- For joining with dim_dates
+            , cast(order_date as date) as order_date_fk  -- FK para dim_dates (será usado date_full_date no join do BI)
             , shipping_address_fk as territory_fk
             , territory_fk as sales_territory_fk
 
             -- Denormalized attributes for easier filtering
-            , credit_card_type
-            , sales_reason_name
+            , coalesce(credit_card_type, 'Cash/Other') as credit_card_type
+            , coalesce(sales_reason_name, 'No Reason') as sales_reason_name
             , order_status
             , order_number
 
@@ -123,12 +123,12 @@ with
             end as tax_amount_allocated
 
             -- Additional attributes
-            , sales_order_is_online
+            , sales_order_is_online as is_online_order
             , special_offer_description
             , special_offer_category
 
             -- Additional dates for analysis
-            , sales_order_date
+            , cast(order_date as date) as order_date
             , sales_order_due_date
             , sales_order_ship_date
 

@@ -5,9 +5,12 @@
 */
 with
     sales_2011 as (
-        select sum(gross_total) as total
-        from {{ ref('fct_sales') }}
-        where extract(year from order_date_pk) = 2011
+        select 
+            sum(f.gross_total) as total
+        from {{ ref('fct_sales') }} f
+        inner join {{ ref('dim_dates') }} d
+            on f.order_date_fk = d.date_full_date
+        where d.date_year = 2011
     )
 
 select total

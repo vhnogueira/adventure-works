@@ -4,7 +4,7 @@
     indexes=[
       {'columns': ['customer_fk'], 'type': 'btree'},
       {'columns': ['product_fk'], 'type': 'btree'},
-      {'columns': ['order_date_pk'], 'type': 'btree'},
+      {'columns': ['order_date_fk'], 'type': 'btree'},
       {'columns': ['territory_fk'], 'type': 'btree'}
     ]
   )

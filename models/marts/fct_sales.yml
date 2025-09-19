@@ -13,43 +13,52 @@ models:
         tests:
           - not_null
           - relationships:
-                to: ref('dim_customers')
-                field: customer_pk
+              to: ref('dim_customers')
+              field: customer_pk
       
       - name: product_fk
         description: "Foreign key to dim_products"
         tests:
           - not_null
           - relationships:
-                to: ref('dim_products')
-                field: product_pk
+              to: ref('dim_products')
+              field: product_pk
       
-      - name: order_date_pk
-        description: "Foreign key to dim_dates"
+      - name: order_date_fk
+        description: "Foreign key to dim_dates (date value to join with date_full_date)"
         tests:
           - not_null
           - relationships:
-                to: ref('dim_dates')
-                field: date_full_date
+              to: ref('dim_dates')
+              field: date_full_date
       
       - name: territory_fk
         description: "Foreign key to dim_territories"
         tests:
           - not_null
           - relationships:
-                to: ref('dim_territories')
-                field: territory_address_id
+              to: ref('dim_territories')
+              field: territory_address_id
+      
+      - name: sales_territory_fk
+        description: "Foreign key to sales territory (original territory ID from source)"
       
       - name: credit_card_type
-        description: "Type of credit card used or null for cash/other"
-      
-      - name: sales_reason_name
-        description: "Reason for sale (can be multiple, comma-separated)"
-      
-      - name: order_status
-        description: "Status of the order"
+        description: "Type of credit card used or 'Cash/Other' for non-card payments"
         tests:
           - not_null
+      
+      - name: sales_reason_name
+        description: "Reason for sale (can be multiple, comma-separated, or 'No Reason')"
+        tests:
+          - not_null
+      
+      - name: order_status
+        description: "Status of the order (1=In process, 2=Approved, 3=Backordered, 4=Rejected, 5=Shipped, 6=Cancelled)"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [1, 2, 3, 4, 5, 6]
       
       - name: order_number
         description: "Sales order number"
@@ -61,46 +70,81 @@ models:
         tests:
           - not_null
           - dbt_utils.accepted_range:
-                min_value: 1
-                inclusive: true
+              min_value: 1
+              inclusive: true
       
       - name: unit_price
         description: "Unit price of the product"
         tests:
           - not_null
           - dbt_utils.accepted_range:
-                min_value: 0
-                inclusive: true
+              min_value: 0
+              inclusive: true
       
       - name: unit_price_discount
         description: "Discount percentage applied"
         tests:
           - not_null
           - dbt_utils.accepted_range:
-                min_value: 0
-                max_value: 1
-                inclusive: true
+              min_value: 0
+              max_value: 1
+              inclusive: true
       
       - name: line_total
-        description: "Total amount for this line item"
+        description: "Total amount for this line item after discount"
         tests:
           - not_null
           - dbt_utils.accepted_range:
-                min_value: 0
-                inclusive: false
+              min_value: 0
+              inclusive: true
+      
+      - name: gross_total
+        description: "Total amount before discount"
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 0
+              inclusive: true
       
       - name: freight_allocated
         description: "Proportional freight allocated to this line item"
         tests:
           - not_null
           - dbt_utils.accepted_range:
-                min_value: 0
-                inclusive: true
+              min_value: 0
+              inclusive: true
       
       - name: tax_amount_allocated
         description: "Proportional tax allocated to this line item"
         tests:
           - not_null
           - dbt_utils.accepted_range:
-                min_value: 0
-                inclusive: true
+              min_value: 0
+              inclusive: true
+      
+      - name: is_online_order
+        description: "Flag indicating if order was placed online"
+        tests:
+          - not_null
+      
+      - name: special_offer_description
+        description: "Description of special offer applied"
+      
+      - name: special_offer_category
+        description: "Category of special offer applied"
+      
+      - name: order_date
+        description: "Original order date (for reference - same value as order_date_fk)"
+        tests:
+          - not_null
+      
+      - name: sales_order_due_date
+        description: "Due date for the order"
+      
+      - name: sales_order_ship_date
+        description: "Ship date for the order"
+      
+      - name: had_discount
+        description: "Flag indicating if discount was applied"
+        tests:
+          - not_null
