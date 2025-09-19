@@ -13,7 +13,6 @@ models:
         tests:
           - not_null
           - relationships:
-              arguments:
                 to: ref('dim_customers')
                 field: customer_pk
       
@@ -22,7 +21,6 @@ models:
         tests:
           - not_null
           - relationships:
-              arguments:
                 to: ref('dim_products')
                 field: product_pk
       
@@ -31,7 +29,6 @@ models:
         tests:
           - not_null
           - relationships:
-              arguments:
                 to: ref('dim_dates')
                 field: date_full_date
       
@@ -40,7 +37,6 @@ models:
         tests:
           - not_null
           - relationships:
-              arguments:
                 to: ref('dim_territories')
                 field: territory_address_id
       
@@ -65,7 +61,6 @@ models:
         tests:
           - not_null
           - dbt_utils.accepted_range:
-              arguments:
                 min_value: 1
                 inclusive: true
       
@@ -74,7 +69,6 @@ models:
         tests:
           - not_null
           - dbt_utils.accepted_range:
-              arguments:
                 min_value: 0
                 inclusive: true
       
@@ -83,7 +77,6 @@ models:
         tests:
           - not_null
           - dbt_utils.accepted_range:
-              arguments:
                 min_value: 0
                 max_value: 1
                 inclusive: true
@@ -93,7 +86,6 @@ models:
         tests:
           - not_null
           - dbt_utils.accepted_range:
-              arguments:
                 min_value: 0
                 inclusive: false
       
@@ -102,7 +94,6 @@ models:
         tests:
           - not_null
           - dbt_utils.accepted_range:
-              arguments:
                 min_value: 0
                 inclusive: true
       
@@ -111,6 +102,5 @@ models:
         tests:
           - not_null
           - dbt_utils.accepted_range:
-              arguments:
                 min_value: 0
                 inclusive: true
