@@ -4,18 +4,46 @@ sources:
     schema: raw_adventure_works
     tables:
       - name: sales_customer
+        columns:
+          - name: customerid
+            tests:
+              - unique
+              - not_null
         tests:
           - dbt_utils.expression_is_true:
               expression: "not (personid is null and storeid is null)"
       
       - name: person_person
-        tests:
-          - dbt_utils.unique_combination_of_columns:
-              combination_of_columns:
-                - businessentityid
+        columns:
+          - name: businessentityid
+            tests:
+              - unique
+              - not_null
       
       - name: sales_store
-        tests:
-          - dbt_utils.unique_combination_of_columns:
-              combination_of_columns:
-                - businessentityid
+        columns:
+          - name: businessentityid
+            tests:
+              - unique
+              - not_null
+      
+      - name: production_product
+        columns:
+          - name: productid
+            tests:
+              - unique
+              - not_null
+      
+      - name: production_productsubcategory
+        columns:
+          - name: productsubcategoryid
+            tests:
+              - unique
+              - not_null
+      
+      - name: production_productcategory
+        columns:
+          - name: productcategoryid
+            tests:
+              - unique
+              - not_null

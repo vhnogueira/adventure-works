@@ -1,0 +1,52 @@
+models:
+  - name: dim_products
+    description: "Product dimension with category hierarchy"
+    columns:
+      - name: product_pk
+        description: "Primary key for product dimension"
+        tests:
+          - unique
+          - not_null
+      
+      - name: product_name
+        description: "Product name"
+        tests:
+          - not_null
+      
+      - name: product_number
+        description: "Product number/code"
+        tests:
+          - not_null
+          - unique
+      
+      - name: product_list_price
+        description: "Current list price of the product"
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 0
+              inclusive: true
+      
+      - name: product_subcategory_name
+        description: "Product subcategory name (includes 'No Subcategory' for products without subcategory)"
+        tests:
+          - not_null
+      
+      - name: product_category_name
+        description: "Product category name (includes 'No Category' for products without category)"
+        tests:
+          - not_null
+      
+      - name: product_make_flag
+        description: "Indicates if product is manufactured in-house"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      
+      - name: product_finished_goods_flag
+        description: "Indicates if product is a finished good"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
