@@ -45,13 +45,10 @@ with
             on state_provinces.territory_fk = sales_territories.sales_territory_pk
     )
 
-    -- Create territory dimension with unique combinations
+    -- Create territory dimension
     , territories_final as (
         select
-            {{ dbt_utils.generate_surrogate_key([
-                'address_pk'
-            ]) }} as territory_pk
-            , address_pk as territory_address_id
+            address_pk as territory_pk
             , coalesce(address_city, 'Unknown') as territory_city
             , coalesce(state_province_name, 'Unknown') as territory_state_province
             , coalesce(address_postal_code, 'Unknown') as territory_postal_code

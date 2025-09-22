@@ -8,11 +8,6 @@ models:
           - unique
           - not_null
       
-      - name: territory_address_id
-        description: "Original address ID from source system"
-        tests:
-          - not_null
-      
       - name: territory_city
         description: "City name (includes 'Unknown' for missing values)"
         tests:
