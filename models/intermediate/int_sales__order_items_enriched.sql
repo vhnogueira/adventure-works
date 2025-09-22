@@ -44,8 +44,10 @@ with
             , oh.customer_fk
             , od.product_fk
             , oh.sales_order_date as order_date
+            
+            , oh.territory_fk as territory_fk  
+            
             , oh.ship_to_address_fk as shipping_address_fk
-            , oh.territory_fk
 
             -- Order attributes (denormalized)
             , oh.sales_order_pk as order_number
@@ -92,9 +94,9 @@ with
             -- Foreign keys to dimensions
             , customer_fk
             , product_fk
-            , cast(order_date as date) as order_date_fk  -- FK para dim_dates (será usado date_full_date no join do BI)
-            , shipping_address_fk as territory_fk
-            , territory_fk as sales_territory_fk
+            , cast(order_date as date) as order_date_fk
+            
+            , territory_fk
 
             -- Denormalized attributes for easier filtering
             , coalesce(credit_card_type, 'Cash/Other') as credit_card_type
@@ -126,6 +128,7 @@ with
             , sales_order_is_online as is_online_order
             , special_offer_description
             , special_offer_category
+            , shipping_address_fk  -- Manter para análises de entrega
 
             -- Additional dates for analysis
             , cast(order_date as date) as order_date
