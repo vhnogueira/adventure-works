@@ -25,12 +25,12 @@ models:
               field: product_pk
       
       - name: order_date_fk
-        description: "Foreign key to dim_dates (date value to join with date_full_date)"
+        description: "Foreign key to dim_dates - DATE value to join with date_full_date"
         tests:
           - not_null
           - relationships:
               to: ref('dim_dates')
-              field: date_full_date
+              field: date_full_date 
       
       - name: territory_fk
         description: "Foreign key to dim_territories"
@@ -38,10 +38,7 @@ models:
           - not_null
           - relationships:
               to: ref('dim_territories')
-              field: territory_address_id
-      
-      - name: sales_territory_fk
-        description: "Foreign key to sales territory (original territory ID from source)"
+              field: territory_pk
       
       - name: credit_card_type
         description: "Type of credit card used or 'Cash/Other' for non-card payments"
